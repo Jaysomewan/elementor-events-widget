@@ -34,7 +34,7 @@ class Upcoming_Events_Widget extends \Elementor\Widget_Base {
     /**
      * Register widget controls
      */
-    protected function _register_controls() {
+    protected function register_controls() {
         $this->start_controls_section(
             'content_section',
             [

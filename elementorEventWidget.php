@@ -142,8 +142,21 @@ class Elementor_Events_Widget {
      * Register our widget
      */
     public function register_widgets() {
-        require_once('widgets/upcoming-events-widget.php');
-        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \Upcoming_Events_Widget());
+        // Using plugin_dir_path to get absolute path
+        $widget_file = plugin_dir_path(__FILE__) . 'widgets/upcoming-events-widget.php';
+        
+        // Check if file exists before requiring it
+        if (file_exists($widget_file)) {
+            require_once($widget_file);
+            \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \Upcoming_Events_Widget());
+        } else {
+            // Add admin notice if widget file doesn't exist
+            add_action('admin_notices', function() {
+                echo '<div class="notice notice-error is-dismissible"><p>' . 
+                     __('Elementor Events Widget Error: Widget file not found. Please ensure the widget file exists in the widgets folder.', 'elementor-events-widget') . 
+                     '</p></div>';
+            });
+        }
     }
 }
 
@@ -161,6 +174,12 @@ function eew_init() {
             echo '<div class="notice notice-warning is-dismissible"><p>' . $message . '</p></div>';
         });
         return;
+    }
+    
+    // Create widgets directory if it doesn't exist
+    $widgets_dir = plugin_dir_path(__FILE__) . 'widgets';
+    if (!file_exists($widgets_dir)) {
+        mkdir($widgets_dir, 0755, true);
     }
     
     new Elementor_Events_Widget();
