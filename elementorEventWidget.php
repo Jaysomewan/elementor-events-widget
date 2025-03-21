@@ -3,7 +3,7 @@
  * Plugin Name: Elementor Events Widget
  * Description: Custom Elementor widget to display upcoming events from custom post type
  * Version: 1.0.0
- * Author: Claude
+ * Author: Jay
  * Text Domain: elementor-events-widget
  */
 
